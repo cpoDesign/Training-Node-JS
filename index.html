@@ -47,11 +47,15 @@
 
 
 <script src="jquery-1.11.0.min.js"></script>
+<script src="js/logic.js"></script>
 
 <script>
-
+    $(document).ready(function () {
+        logic.init();
+    });
 
     $(document).ready(function () {
+
 
         var settings = {
             teamCalendar: '.EventsSection',
