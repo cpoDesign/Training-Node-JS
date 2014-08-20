@@ -71,10 +71,15 @@ logic = {};
         var currentYear = parent.data(settings.config.currentYear);
 
         var url = 'http://localhost:3000/loadTeamEvents/' + teamId + '/' + currentYear + '/' + (parseInt(currentMonth) + 1).toString();
+
+        $(parent).find(settings.dataLoading).show();
+
         $.when($.ajax(url)).then(function (data) {
 
             setCurrentMonth(new Date(currentYear, currentMonth), parent);
             $(parent).find(settings.calendarData).html(data);
+            $(parent).find(settings.calendarData).show(data);
+            $(parent).find(settings.dataLoading).hide();
         });
     }
 
