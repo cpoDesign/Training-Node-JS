@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+<div id="SideBar">
+    <div class="EventsSection" data-team-id="1">
+        <label>Team 1</label>
+
+        <div class="monthNavigation">
+            <a href="javascript:void(0)" class="back"> Back</a>
+            <label class="currentMonth"> no Date </label>
+            <a href="javascript:void(0)" class="next"> Next</a>
+
+        </div>
+        <div class="calendarDataLoading">
+            please wait while data are loading
+        </div>
+        <div class="calendarData">
+            no data for this month
+        </div>
+    </div>
+    <br>
+
+    <div class="EventsSection" data-team-id="2">
+        <label>Team 2</label>
+
+        <div class="monthNavigation">
+            <a href="javascript:void(0)" class="back"> Back</a>
+            <label class="currentMonth"> June 2014 </label>
+            <a href="javascript:void(0)" class="next"> Next</a>
+
+        </div>
+        <div class="calendarDataLoading">
+            please wait while data are loading
+        </div>
+        <div class="calendarData">
+            no data for this month
+        </div>
+    </div>
+
+
+</div>
+
+
+<script src="jquery-1.11.0.min.js"></script>
+
+<script>
+
+
+    $(document).ready(function () {
+
+        var settings = {
+            teamCalendar: '.EventsSection',
+            monthNavigation: '.monthNavigation',
+            currentMonth: '.EventsSection > .currentMonth',
+            dataLoading: '.calendarDataLoading',
+            calendarData: '.calendarData',
+            backFull: '.EventsSection > .monthNavigation > .back',
+            back: ' .back',
+            nextFull: '.EventsSection > .monthNavigation > .next',
+            next: '.next',
+            config: {
+                currentMonth: 'current-month',
+                currentYear: 'current-year',
+                teamId: 'team-id'
+            },
+            wording: {
+                'noData': 'There are no upcoming events'
+            }
+        };
+
+        $("#SideBar div.EventsSection").each(function () {
+            var today = getToday();
+            var element = $(this);
+
+            setDateToParent(element, today);
+            setCurrentMonth(today, parent);
+            processData(getToday(), element);
+        });
+
+        // back - negative add
+        $(settings.back).click(function () {
+            var parent = $(this).parent().parent();
+            var date = updateDate(parent, -1);
+            processData(date, parent);
+        });
+
+        // next - positive add
+        $(settings.next).click(function () {
+            var parent = $(this).parent().parent();
+            var date = updateDate(parent, +1);
+            processData(date, parent);
+        });
+
+
+        function updateDate(parent, move) {
+
+            var date = getDateFromElement(parent);
+            date.setMonth(date.getMonth() + move);
+            setDateToParent(parent, date);
+            return date;
+        }
+
+        //behavior
+
+        function processData(parent) {
+
+            ShowIfBackIsToBeShown(parent);
+            loadData(parent);
+        }
+
+        function loadData(parent) {
+
+            var teamId = parent.data(settings.config.teamId);
+            var currentMonth = parent.data(settings.config.currentMonth);
+            var currentYear = parent.data(settings.config.currentYear);
+
+            var url = 'http://localhost:3000/loadTeamEvents/' + teamId + '/' + currentYear + '/' + (parseInt(currentMonth) + 1).toString();
+            $.when($.ajax(url)).then(function (data) {
+
+                setCurrentMonth(new Date(currentYear, currentMonth), parent);
+                $(parent).find(settings.calendarData).html(data);
+            });
+        }
+
+        function ShowIfBackIsToBeShown(parent) {
+
+            var today = getToday();
+            var backLink = $(parent).find(settings.back);
+
+            var date = getDateFromElement(parent);
+            if (date.getFullYear() > today.getFullYear()) {
+                backLink.show();
+            } else if (date.getFullYear() == today.getFullYear() && date.getMonth() > today.getMonth()) {
+                backLink.show();
+            } else {
+                backLink.hide();
+            }
+        }
+
+        function setCurrentMonth(date, parent) {
+
+            $(parent).find('.currentMonth').html(monthYear(date));
+        }
+
+        function setDateToParent(element, date) {
+
+            element.data(settings.config.currentYear, date.getFullYear());
+            element.data(settings.config.currentMonth, date.getMonth());
+        }
+
+        function getDateFromElement(element) {
+            var year = element.data(settings.config.currentYear);
+            var month = element.data(settings.config.currentMonth);
+            return new Date(year, month, 1);
+        }
+    });
+
+
+    function getToday() {
+        return new Date(Date.now());
+    }
+
+
+    function monthYear(date) {
+
+        var monthNames = [ "January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December" ];
+
+        var yyyy = date.getFullYear().toString();
+
+        return monthNames[date.getMonth()] + ' ' + yyyy;
+    }
+
+
+</script>
+</body>
+</html>

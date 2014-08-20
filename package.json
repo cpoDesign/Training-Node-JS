@@ -1,0 +1,12 @@
+{
+    "name": "application-name",
+    "version": "0.0.1",
+    "description": "test server",
+    "author": {
+        "name": "cpo",
+        "email": "pavel.svarc@cpodesign.com"
+    },
+    "dependencies": {
+        "express": "^4.8.5"
+    }
+}
