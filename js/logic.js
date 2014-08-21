@@ -39,28 +39,24 @@ logic = {};
 
     // back - negative add
     $(settings.backFull).click(function () {
-        var parent = getContainerElement($(this));
+        var parent = findSectionContainer($(this));
         updateDate(parent, -1);
         processData(parent);
     });
 
     // next - positive add
     $(settings.nextFull).click(function () {
-        var parent = getContainerElement($(this));
+        var parent = findSectionContainer($(this));
         updateDate(parent, +1);
         processData(parent);
     });
 
-    function getContainerElement(element) {
+    function findSectionContainer(element) {
         return element.parent().parent();
     }
 
-
-    //behavior
-
     function processData(parent) {
-
-        ShowIfBackIsToBeShown(parent);
+        ShouldBackBeVisible(parent);
         loadData(parent);
     }
 
@@ -83,7 +79,7 @@ logic = {};
         });
     }
 
-    function ShowIfBackIsToBeShown(parent) {
+    function ShouldBackBeVisible(parent) {
 
         var today = getToday();
         var backLink = $(parent).find(settings.back);
@@ -99,12 +95,10 @@ logic = {};
     }
 
     function setCurrentMonth(date, parent) {
-
         $(parent).find('.currentMonth').html(monthYear(date));
     }
 
     function setDateToParent(element, date) {
-
         element.data(settings.config.currentYear, date.getFullYear());
         element.data(settings.config.currentMonth, date.getMonth());
     }
@@ -114,7 +108,6 @@ logic = {};
         var month = element.data(settings.config.currentMonth);
         return new Date(year, month, 1);
     }
-
 
     function getToday() {
         return new Date(Date.now());
@@ -128,8 +121,7 @@ logic = {};
 
     function monthYear(date) {
 
-        var monthNames = [ "January", "February", "March", "April", "May", "June",
-            "July", "August", "September", "October", "November", "December" ];
+        var monthNames = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
 
         var year = date.getFullYear().toString();
 
