@@ -4,11 +4,16 @@ var _ = require('underscore');
 var app = express();
 var ejsEngine = require('ejs-locals');
 var url = require('url');
+var controllers = require('./controllers');
+
 
 // Setup view engine
 //app.engine('ejs', ejsEngine); // supports master pages (detail)
 //app.set('view engine','ejs'); // ejs view engine
 app.set('view engine', 'vash'); // ejs view engine
+
+// map controllers
+controllers.init(app);
 
 app.use(function (req, res, next) {
     console.log('%s %s', req.method, req.url);
@@ -50,7 +55,7 @@ app.use('/loadTeamEvents/:teamId/:year/:month', function (request, response) {
             data.content += '<li> Team' + data.teamId + ' Event' + i + '</li>';
         }
 
-    response.render('index', data);
+    response.render('loadTeamEvents', data);
 
 });
 
