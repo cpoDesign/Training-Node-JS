@@ -1,13 +1,20 @@
-// to execute this you need to call from root application "node 1/server.js"
-
+var http = require('http');
 var express = require('express');
+var _ = require('underscore');
 var app = express();
-var router = express.Router();
+var ejsEngine = require('ejs-locals');
+var url = require('url');
+
+// Setup view engine
+//app.engine('ejs', ejsEngine); // supports master pages (detail)
+//app.set('view engine','ejs'); // ejs view engine
+app.set('view engine', 'vash'); // ejs view engine
 
 app.use(function (req, res, next) {
     console.log('%s %s', req.method, req.url);
     next();
 });
+
 app.use(function (req, res, next) {
     // Website you wish to allow to connect
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:63342');
@@ -21,39 +28,31 @@ app.use(function (req, res, next) {
     // Set to true if you need the website to include cookies in the requests sent
     // to the API (e.g. in case you use sessions)
     res.setHeader('Access-Control-Allow-Credentials', true);
-
-    res.writeHead(200, {'Content-Type': 'text/plain'});
     next();
 });
 
 
-app.get('/', function (req, res) {
-    res.end('Hello world \n' + req.url);
-});
-
-app.use('/loadTeamEvents/:teamId/:year/:month', function (req, res) {
+//
+app.use('/loadTeamEvents/:teamId/:year/:month', function (request, response) {
 
 
-    var teamId = req.params.teamId,
-        year = req.params.year,
-        month = req.params.month;
+    var teamId = request.params.teamId,
+        year = request.params.year,
+        month = request.params.month;
 
-    res.write('<h2>');
-    res.write('Year:' + year + ' Month:' + month);
-    res.write('</h2>');
-    res.write('<ul>');
-
-    setTimeout(function () {
+    var data = {
+        title: 'Year:' + year + ' Month:' + month,
+        teamId: teamId,
+        content: ''
+    }
 
         for (var i = 0; i < 5; i++) {
-            res.write('<li> Team' + teamId + ' Event' + i + '</li>');
+            data.content += '<li> Team' + data.teamId + ' Event' + i + '</li>';
         }
-        res.write('</ul>');
-        res.end();
-    }, 2000);
 
+    response.render('index', data);
 
 });
 
-app.listen(3000);
-
+var server = http.createServer(app);
+server.listen(3000);
