@@ -61,5 +61,13 @@ app.use('/loadTeamEvents/:teamId/:year/:month', function (request, response) {
 
 });
 
+
+app.get('/api/sql', function(request, response){
+   var msnodesql = require('msnodesql');
+    var connString="";
+    //todo: to be completed at later time... bed time
+
+});
+
 var server = http.createServer(app);
 server.listen(3000);
