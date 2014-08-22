@@ -8,8 +8,6 @@ var controllers = require('./controllers');
 
 
 // Setup view engine
-//app.engine('ejs', ejsEngine); // supports master pages (detail)
-//app.set('view engine','ejs'); // ejs view engine
 app.set('view engine', 'vash'); // ejs view engine
 
 // map controllers

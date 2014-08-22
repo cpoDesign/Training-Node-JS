@@ -8,7 +8,7 @@
 
             data.getNodeCategories(function (err, results) {
 
-                res.render('index', {title: 'pageTitle', error: err, categories: results});
+                res.render('index', {title: 'The Board', error: err, categories: results});
             });
 
         });

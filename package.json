@@ -1,18 +1,21 @@
 {
-    "name": "application-name",
-    "version": "0.0.1",
-    "description": "test server",
-    "author": {
-        "name": "cpo",
-        "email": "pavel.svarc@cpodesign.com"
-    },
-    "dependencies": {
-        "express": "^4.8.5",
-        "underscore": "^1.6.0",
-        "jade": "^1.5.0",
-        "ejs": "^1.0.0",
-        "ejs-locals": "^1.0.2",
-        "vash": "^0.7.12-1"
-    },
-    "devDependencies": {}
+  "name": "application-name",
+  "version": "0.0.1",
+  "description": "test server",
+  "author": {
+    "name": "cpo",
+    "email": "pavel.svarc@cpodesign.com"
+  },
+  "dependencies": {
+    "express": "^4.8.5",
+    "underscore": "^1.6.0",
+    "jade": "^1.5.0",
+    "ejs": "^1.0.0",
+    "ejs-locals": "^1.0.2",
+    "vash": "^0.7.12-1"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-nodemon": "^0.3.0"
+  }
 }
