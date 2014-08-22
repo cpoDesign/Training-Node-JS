@@ -15,6 +15,10 @@ app.set('view engine', 'vash'); // ejs view engine
 // map controllers
 controllers.init(app);
 
+// allow access to public directory
+// __dirname => root of directory where server.js is running from
+app.use(express.static(__dirname + '/public'));
+
 app.use(function (req, res, next) {
     console.log('%s %s', req.method, req.url);
     next();
